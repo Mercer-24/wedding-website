@@ -1,0 +1,22 @@
+services:
+  wedding-website:
+    build: .
+    container_name: wedding-website
+    restart: unless-stopped
+    ports:
+      - "3099:3000"
+    volumes:
+      - wedding-data:/data
+    environment:
+      - DB_PATH=/data/wedding.db
+      - UPLOADS_DIR=/data/uploads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wedding.rule=Host(`hochzeit.mercerdev.me`)"
+      - "traefik.http.routers.wedding.entrypoints=websecure"
+      - "traefik.http.routers.wedding.tls=true"
+      - "traefik.http.routers.wedding.tls.certresolver=letsencrypt"
+      - "traefik.http.services.wedding.loadbalancer.server.port=3000"
+
+volumes:
+  wedding-data:

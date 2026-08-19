@@ -1,0 +1,58 @@
+/**
+ * Challenge Definitions
+ * 
+ * Add, remove, or edit challenges here. Each challenge becomes a card
+ * on the Fotochallenge page using the ChallengeCard widget.
+ * 
+ * The "id" must be unique and stable — it's used as the directory name
+ * for uploaded photos on disk.
+ */
+
+export interface Challenge {
+  id: string;
+  number: number;
+  titleDe: string;
+  titleEn: string;
+  descriptionDe: string;
+  descriptionEn: string;
+  icon: string; // Emoji or icon name
+}
+
+export const challenges: Challenge[] = [
+  {
+    id: "funniest-photo",
+    number: 1,
+    titleDe: "Das lustigste Foto",
+    titleEn: "The Funniest Photo",
+    descriptionDe:
+      "Macht das witzigste Bild des Abends! Seid kreativ, verrückt und zeigt eure beste Seite.",
+    descriptionEn:
+      "Take the funniest photo of the evening! Be creative, crazy, and show your best side.",
+    icon: "🤣",
+  },
+  {
+    id: "couple-focus",
+    number: 2,
+    titleDe: "Brautpaar im Fokus",
+    titleEn: "Couple in Focus",
+    descriptionDe:
+      "Fangt das Brautpaar in einem schönen, unerwarteten oder lustigen Moment ein.",
+    descriptionEn:
+      "Capture the couple in a beautiful, unexpected, or funny moment.",
+    icon: "💍",
+  },
+];
+
+/**
+ * Add new challenges by appending to this array:
+ * 
+ * {
+ *   id: "my-new-challenge",      // unique, no spaces, used as folder name
+ *   number: 3,
+ *   titleDe: "Deutscher Titel",
+ *   titleEn: "English Title",
+ *   descriptionDe: "Beschreibung auf Deutsch.",
+ *   descriptionEn: "Description in English.",
+ *   icon: "📸",
+ * }
+ */

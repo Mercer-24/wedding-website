@@ -1,0 +1,142 @@
+/**
+ * Internationalization (i18n) Configuration
+ * 
+ * All user-facing text lives here. Change strings in one place
+ * to update the entire site.
+ * 
+ * Usage: useT("welcome.title")  →  "Willkommen" (de) | "Welcome" (en)
+ */
+
+export type Locale = "de" | "en";
+
+export const defaultLocale: Locale = "de";
+
+export const locales: Locale[] = ["de", "en"];
+
+export const localeLabels: Record<Locale, string> = {
+  de: "Deutsch",
+  en: "English",
+};
+
+// Deeply nested translation object — use Record<string, unknown> internally
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Translations = Record<string, any>;
+
+export const t: Record<Locale, Translations> = {
+  de: {
+    nav: {
+      home: "Willkommen",
+      photoChallenge: "Fotochallenge",
+      schedule: "Ablauf",
+      location: "Anfahrt",
+      admin: "Admin",
+    },
+    welcome: {
+      title: "Willkommen",
+      subtitle: "Wir feiern unsere Liebe — und ihr seid dabei!",
+      cta: "Zur Fotochallenge",
+    },
+    photoChallenge: {
+      title: "Fotochallenge",
+      subtitle: "Lade ein Foto zu jeder Challenge hoch und teilt eure besten Momente!",
+      nameLabel: "Dein Name",
+      namePlaceholder: "Max Mustermann",
+      uploadButton: "Foto hochladen",
+      uploading: "Hochladen...",
+      success: "Foto erfolgreich hochgeladen!",
+      error: "Fehler beim Hochladen. Bitte versuche es erneut.",
+      replaceInfo: "Du hast bereits ein Foto für diese Challenge hochgeladen. Ein neues Foto ersetzt das alte.",
+      challengeAlreadyDone: "Bereits hochgeladen ✓",
+    },
+    schedule: {
+      title: "Ablauf",
+      subtitle: "So läuft der Tag ab",
+      ceremony: "Trauung",
+      ceremonyTime: "14:00 Uhr",
+      reception: "Sektempfang",
+      receptionTime: "15:00 Uhr",
+      dinner: "Dinner",
+      dinnerTime: "18:00 Uhr",
+      party: "Party",
+      partyTime: "21:00 Uhr",
+    },
+    location: {
+      title: "Anfahrt",
+      subtitle: "So findet ihr uns",
+      venueName: "Schlossgarten",
+      address: "Musterstraße 1, 12345 Musterstadt",
+      directions: "Anfahrt",
+    },
+    admin: {
+      title: "Admin — Fotos",
+      download: "Herunterladen",
+      noPhotos: "Noch keine Fotos hochgeladen.",
+      filterByChallenge: "Filter nach Challenge",
+      allChallenges: "Alle Challenges",
+      guest: "Gast",
+      challenge: "Challenge",
+      date: "Datum",
+    },
+    common: {
+      languageSwitch: "Sprache wechseln",
+    },
+  },
+  en: {
+    nav: {
+      home: "Welcome",
+      photoChallenge: "Photo Challenge",
+      schedule: "Schedule",
+      location: "Location",
+      admin: "Admin",
+    },
+    welcome: {
+      title: "Welcome",
+      subtitle: "We're celebrating our love — and you're part of it!",
+      cta: "Go to Photo Challenge",
+    },
+    photoChallenge: {
+      title: "Photo Challenge",
+      subtitle: "Upload a photo for each challenge and share your best moments!",
+      nameLabel: "Your Name",
+      namePlaceholder: "John Doe",
+      uploadButton: "Upload Photo",
+      uploading: "Uploading...",
+      success: "Photo uploaded successfully!",
+      error: "Error uploading photo. Please try again.",
+      replaceInfo: "You've already uploaded a photo for this challenge. A new photo will replace the old one.",
+      challengeAlreadyDone: "Already uploaded ✓",
+    },
+    schedule: {
+      title: "Schedule",
+      subtitle: "Here's how the day unfolds",
+      ceremony: "Ceremony",
+      ceremonyTime: "2:00 PM",
+      reception: "Champagne Reception",
+      receptionTime: "3:00 PM",
+      dinner: "Dinner",
+      dinnerTime: "6:00 PM",
+      party: "Party",
+      partyTime: "9:00 PM",
+    },
+    location: {
+      title: "Location",
+      subtitle: "How to find us",
+      venueName: "Castle Garden",
+      address: "Example Street 1, 12345 Example City",
+      directions: "Directions",
+    },
+    admin: {
+      title: "Admin — Photos",
+      download: "Download",
+      noPhotos: "No photos uploaded yet.",
+      filterByChallenge: "Filter by Challenge",
+      allChallenges: "All Challenges",
+      guest: "Guest",
+      challenge: "Challenge",
+      date: "Date",
+    },
+    common: {
+      languageSwitch: "Switch language",
+    },
+  },
+};

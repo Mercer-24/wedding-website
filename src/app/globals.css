@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  /* These CSS variables are set dynamically from theme.ts in layout.tsx */
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  transition: all 0.15s ease;
+}
