@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Required for Docker deployment
-  output: "standalone",
   reactStrictMode: true,
-  // Server external packages (better-sqlite3 is native)
+  // better-sqlite3 is a native module — must be externalized for Docker
   serverExternalPackages: ["better-sqlite3"],
 };
 
