@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/lib/i18n-context";
 import { useGuest } from "@/lib/guest-context";
+import { GuestRegistrationError } from "@/lib/guest-context";
 import { theme } from "@/config/theme";
 import { useState } from "react";
 
@@ -28,8 +29,18 @@ export default function GuestNameModal() {
     setError(null);
     try {
       await submitName(name.trim());
-    } catch {
-      setError(locale === "de" ? "Etwas ist schiefgelaufen. Bitte versuche es erneut." : "Something went wrong. Please try again.");
+      // On success, submitName closes the modal — no further action needed.
+      // If we get here and modal is still open, something went wrong silently.
+    } catch (err) {
+      if (err instanceof GuestRegistrationError) {
+        setError(err.message);
+      } else {
+        setError(
+          locale === "de"
+            ? "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+            : "Something went wrong. Please try again."
+        );
+      }
     } finally {
       setSubmitting(false);
     }
