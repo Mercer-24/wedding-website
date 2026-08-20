@@ -1,4 +1,8 @@
-@import "tailwindcss";
+/* 
+ * Tailwind CSS is pre-built as a static file (public/tailwind.css)
+ * and loaded via <link> in layout.tsx. This file only contains
+ * custom overrides that Tailwind doesn't cover.
+ */
 
 :root {
   /* These CSS variables are set dynamically from theme.ts in layout.tsx */
