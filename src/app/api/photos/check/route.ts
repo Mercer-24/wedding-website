@@ -5,18 +5,30 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const challengeId = searchParams.get("challengeId");
+    const guestId = searchParams.get("guestId");
     const guestName = searchParams.get("guestName");
 
-    if (!challengeId || !guestName) {
+    if (!challengeId) {
       return NextResponse.json(
-        { error: "Missing challengeId or guestName" },
+        { error: "Missing challengeId" },
         { status: 400 }
       );
     }
 
-    const guestId = findOrCreateGuest(guestName);
-    const exists = hasGuestUploadedForChallenge(guestId, challengeId);
+    // Resolve guest: prefer guestId, fall back to guestName
+    let resolvedGuestId = guestId;
+    if (!resolvedGuestId && guestName) {
+      resolvedGuestId = findOrCreateGuest(guestName);
+    }
 
+    if (!resolvedGuestId) {
+      return NextResponse.json(
+        { error: "Missing guestId or guestName" },
+        { status: 400 }
+      );
+    }
+
+    const exists = hasGuestUploadedForChallenge(resolvedGuestId, challengeId);
     return NextResponse.json({ exists });
   } catch (error) {
     console.error("Check error:", error);

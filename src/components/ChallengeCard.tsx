@@ -1,21 +1,20 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n-context";
-import { challenges } from "@/config/challenges";
+import { useGuest } from "@/lib/guest-context";
 import { theme } from "@/config/theme";
 import type { Challenge } from "@/config/challenges";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 /**
  * ChallengeCard — reusable widget for a single challenge.
- * 
- * Displays: number, icon, title, description, and an upload button.
- * When the guest enters their name and clicks upload, this component
- * sends the photo to the API.
+ *
+ * Uses the GuestContext to get the guestId. If no guest is registered,
+ * clicking upload opens the name registration modal.
  */
 export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const { locale, t } = useI18n();
-  const [guestName, setGuestName] = useState("");
+  const { guestId, guestName, openModal, isReady } = useGuest();
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [alreadyUploaded, setAlreadyUploaded] = useState(false);
@@ -25,22 +24,28 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const description = locale === "de" ? challenge.descriptionDe : challenge.descriptionEn;
 
   // Check if guest has already uploaded for this challenge
-  const checkExistingUpload = async (name: string) => {
-    if (!name.trim()) return;
-    try {
-      const res = await fetch(
-        `/api/photos/check?challengeId=${challenge.id}&guestName=${encodeURIComponent(name.trim())}`
-      );
-      const data = await res.json();
-      setAlreadyUploaded(data.exists);
-    } catch {
-      // Ignore check errors
-    }
-  };
+  useEffect(() => {
+    if (!guestId || !isReady) return;
+    let cancelled = false;
+    const check = async () => {
+      try {
+        const res = await fetch(
+          `/api/photos/check?challengeId=${challenge.id}&guestId=${guestId}`
+        );
+        const data = await res.json();
+        if (!cancelled) setAlreadyUploaded(data.exists);
+      } catch {
+        // Ignore check errors
+      }
+    };
+    check();
+    return () => { cancelled = true; };
+  }, [guestId, challenge.id, isReady]);
 
   const handleUpload = async (file: File) => {
-    if (!guestName.trim()) {
-      setMessage({ type: "error", text: locale === "de" ? "Bitte gib deinen Namen ein." : "Please enter your name." });
+    // No guest yet → open name modal
+    if (!guestId) {
+      openModal();
       return;
     }
 
@@ -49,7 +54,7 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("guestName", guestName.trim());
+    formData.append("guestId", guestId);
     formData.append("challengeId", challenge.id);
 
     try {
@@ -75,6 +80,16 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleUpload(file);
+    // Reset file input so same file can be re-selected
+    e.target.value = "";
+  };
+
+  const handleButtonClick = () => {
+    if (!guestId) {
+      openModal();
+      return;
+    }
+    fileInputRef.current?.click();
   };
 
   return (
@@ -112,39 +127,15 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
         </div>
       </div>
 
-      {/* Name Input */}
-      <div className="mt-4">
-        <label className="block text-sm font-medium mb-1" style={{ color: theme.colors.textSecondary }}>
-          {t("photoChallenge.nameLabel")}
-        </label>
-        <input
-          type="text"
-          value={guestName}
-          onChange={(e) => {
-            setGuestName(e.target.value);
-            setAlreadyUploaded(false);
-            setMessage(null);
-          }}
-          onBlur={() => checkExistingUpload(guestName)}
-          placeholder={t("photoChallenge.namePlaceholder")}
-          className="w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2"
-          style={{
-            borderColor: theme.colors.border,
-            backgroundColor: theme.colors.bgPrimary,
-            color: theme.colors.textPrimary,
-          }}
-        />
-      </div>
-
       {/* Already uploaded notice */}
       {alreadyUploaded && (
-        <p className="mt-2 text-xs" style={{ color: theme.colors.accent }}>
+        <p className="text-xs mb-3" style={{ color: theme.colors.accent }}>
           {t("photoChallenge.replaceInfo")}
         </p>
       )}
 
       {/* Upload Button (hidden file input + visible button) */}
-      <div className="mt-3">
+      <div>
         <input
           ref={fileInputRef}
           type="file"
@@ -154,8 +145,8 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
           className="hidden"
         />
         <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading || !guestName.trim()}
+          onClick={handleButtonClick}
+          disabled={uploading}
           className="w-full py-2.5 px-4 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
           style={{
             backgroundColor: uploading ? theme.colors.primaryLight : theme.colors.primary,

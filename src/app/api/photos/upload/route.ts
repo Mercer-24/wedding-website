@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findOrCreateGuest, upsertPhoto, getDb } from "@/lib/db";
+import { findOrCreateGuest, upsertPhoto } from "@/lib/db";
 import path from "path";
 import * as fs from "fs";
 import { v4 as uuidv4 } from "uuid";
@@ -10,14 +10,29 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const guestName = formData.get("guestName") as string | null;
     const challengeId = formData.get("challengeId") as string | null;
 
-    if (!file || !guestName || !challengeId) {
+    // Accept either guestId (preferred) or guestName (fallback)
+    let guestId = formData.get("guestId") as string | null;
+    const guestName = formData.get("guestName") as string | null;
+
+    if (!file || !challengeId) {
       return NextResponse.json(
-        { error: "Missing required fields: file, guestName, challengeId" },
+        { error: "Missing required fields: file, challengeId" },
         { status: 400 }
       );
+    }
+
+    if (!guestId && !guestName) {
+      return NextResponse.json(
+        { error: "Missing guestId or guestName" },
+        { status: 400 }
+      );
+    }
+
+    // If only name provided, look up or create the guest
+    if (!guestId && guestName) {
+      guestId = findOrCreateGuest(guestName);
     }
 
     // Validate file type
@@ -52,8 +67,7 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(filePath, buffer);
 
     // Store in database
-    const guestId = findOrCreateGuest(guestName);
-    upsertPhoto(guestId, challengeId, `${challengeId}/${filename}`, file.name);
+    upsertPhoto(guestId!, challengeId, `${challengeId}/${filename}`, file.name);
 
     return NextResponse.json({ success: true, filename });
   } catch (error) {
