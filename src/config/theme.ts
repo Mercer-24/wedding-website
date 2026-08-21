@@ -2,34 +2,37 @@
  * Wedding Website Theme Configuration
  * 
  * Change colors, fonts, and spacing here to customize the entire site.
- * Colors are also exported as CSS custom properties in globals.css.
+ * Colors are also exported as CSS custom properties in layout.tsx.
+ * 
+ * Primary: #87a08a (Sage green) — elegant, natural, wedding-appropriate
+ * Accent:  #d09c8b (Dusty copper/rose) — warm complementary tone
  */
 
 export const theme = {
   colors: {
-    // Primary — main brand color (used for headings, buttons, links)
-    primary: "#8B5E3C",        // Warm brown — change to bride/groom colors
-    primaryLight: "#A67B5B",   // Lighter variant for hovers
-    primaryDark: "#6B4226",    // Darker variant for active states
+    // Primary — sage green (main brand color for headings, buttons, links)
+    primary: "#87a08a",
+    primaryLight: "#a9bcab",     // Lighter sage for hovers
+    primaryDark: "#5a725d",      // Darker sage for active states
 
-    // Accent — secondary highlight color
-    accent: "#D4A373",         // Gold/tan accent
-    accentLight: "#E6C9A0",    // Lighter accent for backgrounds
+    // Accent — dusty copper/rose (secondary highlight)
+    accent: "#d09c8b",           // Warm copper accent
+    accentLight: "#ebdbd6",      // Soft blush for backgrounds
 
     // Background
-    bgPrimary: "#FFFBF5",      // Main background (warm white)
-    bgSecondary: "#F5EDE3",    // Card/section backgrounds
-    bgDark: "#2C1810",         // Dark sections / footer
+    bgPrimary: "#f9fbf9",        // Very light sage-white (main bg)
+    bgSecondary: "#edf2ee",      // Light sage (cards/sections)
+    bgDark: "#1d301f",           // Deep forest (dark sections/footer)
 
     // Text
-    textPrimary: "#2C1810",     // Main text color
-    textSecondary: "#6B4226",   // Subtle text / descriptions
-    textOnPrimary: "#FFFFFF",   // Text on primary-colored backgrounds
-    textOnDark: "#F5EDE3",      // Text on dark backgrounds
+    textPrimary: "#18251a",      // Near-black with green undertone
+    textSecondary: "#526f56",    // Muted sage (descriptions)
+    textOnPrimary: "#FFFFFF",    // White on primary-colored buttons
+    textOnDark: "#e8eee8",       // Light sage on dark backgrounds
 
     // Borders and dividers
-    border: "#D4A373",
-    borderLight: "#E6C9A0",
+    border: "#abc4ae",            // Medium sage
+    borderLight: "#dce5dd",      // Very light sage
   },
 
   fonts: {
@@ -52,7 +55,7 @@ export const theme = {
 
   // Wedding details (used across pages)
   wedding: {
-    couple: "Maria & Thomas",   // Change to your names!
+    couple: "Felicia & Paul",   // Change to your names!
     date: "20. September 2025",
     venue: "Schlossgarten",
   },
