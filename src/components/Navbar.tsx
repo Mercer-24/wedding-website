@@ -2,8 +2,10 @@
 
 import { useI18n } from "@/lib/i18n-context";
 import { theme } from "@/config/theme";
+import { images } from "@/config/images";
 import { locales, localeLabels } from "@/config/i18n";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import type { Locale } from "@/config/i18n";
@@ -30,12 +32,20 @@ export default function Navbar() {
     >
       <div className="max-w-5xl mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo / Couple Name */}
+          {/* Logo + Couple Name */}
           <Link
             href="/"
-            className="text-lg font-bold"
+            className="flex items-center gap-2 text-lg font-bold"
             style={{ color: theme.colors.primary, fontFamily: theme.fonts.heading }}
           >
+            <Image
+              src={images.logo}
+              alt={theme.wedding.couple}
+              width={36}
+              height={36}
+              className="rounded-full object-cover"
+              style={{ border: `2px solid ${theme.colors.primary}` }}
+            />
             {theme.wedding.couple}
           </Link>
 

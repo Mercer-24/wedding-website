@@ -2,6 +2,8 @@
 
 import { useI18n } from "@/lib/i18n-context";
 import { theme } from "@/config/theme";
+import { images } from "@/config/images";
+import Image from "next/image";
 
 export default function LocationPage() {
   const { t } = useI18n();
@@ -27,31 +29,43 @@ export default function LocationPage() {
 
       {/* Venue Info Card */}
       <div
-        className="rounded-xl p-8 shadow-sm border text-center"
+        className="rounded-xl overflow-hidden shadow-sm border"
         style={{
-          backgroundColor: theme.colors.bgSecondary,
           borderColor: theme.colors.borderLight,
         }}
       >
-        <div className="text-4xl mb-4">🏰</div>
-        <h2
-          className="text-2xl font-bold mb-2"
-          style={{ color: theme.colors.primary }}
-        >
-          {t("location.venueName")}
-        </h2>
-        <p className="text-lg mb-6" style={{ color: theme.colors.textSecondary }}>
-          {t("location.address")}
-        </p>
+        {/* Venue Image */}
+        <div className="relative w-full h-64">
+          <Image
+            src={images.location.venue}
+            alt={t("location.venueName")}
+            fill
+            className="object-cover"
+          />
+        </div>
 
-        {/* Placeholder for map/image — add your image to /public/images/location/ */}
-        <div
-          className="rounded-lg p-12 text-center"
-          style={{ backgroundColor: theme.colors.bgPrimary, borderColor: theme.colors.borderLight }}
-        >
-          <p className="text-sm" style={{ color: theme.colors.textSecondary }}>
-            📍 Map placeholder — add an image to /public/images/location/map.jpg
+        <div className="p-8 text-center" style={{ backgroundColor: theme.colors.bgSecondary }}>
+          <h2
+            className="text-2xl font-bold mb-2"
+            style={{ color: theme.colors.primary }}
+          >
+            {t("location.venueName")}
+          </h2>
+          <p className="text-lg mb-6" style={{ color: theme.colors.textSecondary }}>
+            {t("location.address")}
           </p>
+
+          {/* Map */}
+          <div className="rounded-lg overflow-hidden border" style={{ borderColor: theme.colors.borderLight }}>
+            <div className="relative w-full h-64">
+              <Image
+                src={images.location.map}
+                alt="Map"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

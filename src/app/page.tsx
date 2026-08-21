@@ -1,16 +1,43 @@
 "use client";
 
 import { theme } from "@/config/theme";
+import { images } from "@/config/images";
 import { useI18n } from "@/lib/i18n-context";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
   const { t } = useI18n();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
-      {/* Hero Section */}
-      <div className="max-w-2xl mx-auto">
+    <div className="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={images.heroBackground}
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Overlay for readability */}
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: `${theme.colors.bgPrimary}cc` }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-2xl mx-auto">
+        {/* Logo */}
+        <Image
+          src={images.logo}
+          alt={theme.wedding.couple}
+          width={120}
+          height={120}
+          className="rounded-full mx-auto mb-6 object-cover"
+          style={{ border: `3px solid ${theme.colors.primary}` }}
+        />
         <h1
           className="text-5xl md:text-7xl font-bold mb-4"
           style={{ color: theme.colors.primary, fontFamily: theme.fonts.heading }}
@@ -48,7 +75,7 @@ export default function HomePage() {
       </div>
 
       {/* Decorative bottom section */}
-      <div className="mt-16 text-sm" style={{ color: theme.colors.textSecondary }}>
+      <div className="relative z-10 mt-16 text-sm" style={{ color: theme.colors.textSecondary }}>
         <p>{theme.wedding.venue}</p>
       </div>
     </div>
