@@ -1,11 +1,13 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n-context";
+import { useGuest } from "@/lib/guest-context";
 import { theme } from "@/config/theme";
 import { useState, useRef } from "react";
 
 export default function WeddingPhotosPage() {
   const { t } = useI18n();
+  const { guestId } = useGuest();
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +33,7 @@ export default function WeddingPhotosPage() {
 
       const formData = new FormData();
       formData.append("file", file);
+      if (guestId) formData.append("guestId", guestId);
 
       try {
         const res = await fetch("/api/wedding-photos/upload", {

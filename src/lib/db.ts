@@ -56,15 +56,24 @@ async function ensureDb(): Promise<Database> {
   _db.run(`CREATE INDEX IF NOT EXISTS idx_photos_challenge ON photos(challenge_id)`);
   _db.run(`CREATE INDEX IF NOT EXISTS idx_photos_guest ON photos(guest_id)`);
 
-  // Wedding photos — simple uploads without guest association
+  // Wedding photos — uploads with optional guest association
   _db.run(`
     CREATE TABLE IF NOT EXISTS wedding_photos (
       id TEXT PRIMARY KEY,
+      guest_id TEXT,
       filename TEXT NOT NULL,
       original_name TEXT NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (guest_id) REFERENCES guests(id)
     );
   `);
+
+  // Migration: add guest_id column if it doesn't exist (for existing databases)
+  try {
+    _db.run("ALTER TABLE wedding_photos ADD COLUMN guest_id TEXT");
+  } catch {
+    // Column already exists, ignore
+  }
 
   saveDb();
   _initialized = true;
@@ -210,17 +219,33 @@ export interface PhotoRecord {
   guest_name: string;
 }
 
-// --- Wedding photos operations (no guest required) ---
+// --- Photo delete operations ---
+
+export async function deletePhoto(id: string): Promise<void> {
+  await ensureDb();
+  const rows = queryAll("SELECT filename FROM photos WHERE id = ?", [id]);
+  if (rows.length > 0) {
+    const uploadsDir = process.env.UPLOADS_DIR || path.join(process.cwd(), "data", "uploads");
+    const oldPath = path.join(uploadsDir, rows[0].filename as string);
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
+    }
+    runStmt("DELETE FROM photos WHERE id = ?", [id]);
+  }
+}
+
+// --- Wedding photos operations (optional guest association) ---
 
 export async function insertWeddingPhoto(
   filename: string,
-  originalName: string
+  originalName: string,
+  guestId?: string | null
 ): Promise<string> {
   await ensureDb();
   const id = uuidv4();
   runStmt(
-    "INSERT INTO wedding_photos (id, filename, original_name) VALUES (?, ?, ?)",
-    [id, filename, originalName]
+    "INSERT INTO wedding_photos (id, guest_id, filename, original_name) VALUES (?, ?, ?, ?)",
+    [id, guestId || null, filename, originalName]
   );
   return id;
 }
@@ -241,7 +266,11 @@ export async function deleteWeddingPhoto(id: string): Promise<void> {
 export async function getAllWeddingPhotos(): Promise<WeddingPhotoRecord[]> {
   await ensureDb();
   return queryAll(
-    "SELECT id, filename, original_name, created_at FROM wedding_photos ORDER BY created_at DESC"
+    `SELECT wp.id, wp.filename, wp.original_name, wp.created_at,
+            g.name as guest_name
+     FROM wedding_photos wp
+     LEFT JOIN guests g ON wp.guest_id = g.id
+     ORDER BY wp.created_at DESC`
   ) as unknown as WeddingPhotoRecord[];
 }
 
@@ -250,4 +279,5 @@ export interface WeddingPhotoRecord {
   filename: string;
   original_name: string;
   created_at: string;
+  guest_name: string | null;
 }

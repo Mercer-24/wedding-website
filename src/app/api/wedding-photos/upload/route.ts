@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
+    const guestId = formData.get("guestId") as string | null;
 
     if (!file) {
       return NextResponse.json(
@@ -49,8 +50,8 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(filePath, buffer);
 
-    // Store in database (no guest association)
-    const id = await insertWeddingPhoto(`wedding/${filename}`, file.name);
+    // Store in database (optional guest association)
+    const id = await insertWeddingPhoto(`wedding/${filename}`, file.name, guestId || undefined);
 
     return NextResponse.json({ success: true, id, filename });
   } catch (error) {

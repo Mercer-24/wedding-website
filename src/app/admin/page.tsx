@@ -19,6 +19,7 @@ interface WeddingPhotoEntry {
   filename: string;
   original_name: string;
   created_at: string;
+  guest_name: string | null;
 }
 
 export default function AdminPage() {
@@ -92,11 +93,15 @@ export default function AdminPage() {
     }
   }, [activeTab, authenticated]);
 
-  const handleDeleteWeddingPhoto = async (id: string) => {
+  const handleDeletePhoto = async (id: string, type: "challenge" | "wedding") => {
     if (!confirm(t("admin.deleteConfirm"))) return;
     try {
-      await fetch(`/api/wedding-photos/delete?id=${id}`, { method: "DELETE" });
-      loadWeddingPhotos();
+      const endpoint = type === "challenge"
+        ? `/api/photos/delete?id=${id}`
+        : `/api/wedding-photos/delete?id=${id}`;
+      await fetch(endpoint, { method: "DELETE" });
+      if (type === "challenge") loadPhotos();
+      else loadWeddingPhotos();
     } catch (err) {
       console.error("Failed to delete photo:", err);
     }
@@ -238,6 +243,7 @@ export default function AdminPage() {
                     <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}>
                       {t("admin.download")}
                     </th>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,8 +268,17 @@ export default function AdminPage() {
                             className="underline"
                             style={{ color: theme.colors.primary }}
                           >
-                            Download
+                            {t("admin.download")}
                           </a>
+                        </td>
+                        <td className="p-3">
+                          <button
+                            onClick={() => handleDeletePhoto(photo.id, "challenge")}
+                            className="px-2 py-0.5 rounded text-xs font-medium"
+                            style={{ backgroundColor: "#dc2626", color: "white" }}
+                          >
+                            ✕
+                          </button>
                         </td>
                       </tr>
                     );
@@ -281,33 +296,54 @@ export default function AdminPage() {
           {weddingPhotos.length === 0 ? (
             <p style={{ color: theme.colors.textSecondary }}>{t("admin.noPhotos")}</p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {weddingPhotos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className="relative rounded-lg overflow-hidden border group"
-                  style={{ borderColor: theme.colors.borderLight }}
-                >
-                  <img
-                    src={`/api/photos/file?path=${encodeURIComponent(photo.filename)}`}
-                    alt={photo.original_name}
-                    className="w-full aspect-square object-cover"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-2 flex justify-between items-center text-xs"
-                    style={{ backgroundColor: `${theme.colors.bgDark}dd`, color: theme.colors.textOnDark }}
-                  >
-                    <span className="truncate">{photo.original_name}</span>
-                    <button
-                      onClick={() => handleDeleteWeddingPhoto(photo.id)}
-                      className="ml-2 px-2 py-0.5 rounded text-xs font-medium"
-                      style={{ backgroundColor: "#dc2626", color: "white" }}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr style={{ backgroundColor: theme.colors.bgSecondary }}>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}>
+                      {t("admin.guest")}
+                    </th>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}>
+                      Original
+                    </th>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}>
+                      {t("admin.date")}
+                    </th>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}>
+                      {t("admin.download")}
+                    </th>
+                    <th className="text-left p-3 border" style={{ borderColor: theme.colors.borderLight }}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weddingPhotos.map((photo) => (
+                    <tr key={photo.id} className="border-b" style={{ borderColor: theme.colors.borderLight }}>
+                      <td className="p-3">{photo.guest_name || "—"}</td>
+                      <td className="p-3">{photo.original_name}</td>
+                      <td className="p-3">{new Date(photo.created_at).toLocaleString()}</td>
+                      <td className="p-3">
+                        <a
+                          href={`/api/photos/file?path=${encodeURIComponent(photo.filename)}`}
+                          download
+                          className="underline"
+                          style={{ color: theme.colors.primary }}
+                        >
+                          {t("admin.download")}
+                        </a>
+                      </td>
+                      <td className="p-3">
+                        <button
+                          onClick={() => handleDeletePhoto(photo.id, "wedding")}
+                          className="px-2 py-0.5 rounded text-xs font-medium"
+                          style={{ backgroundColor: "#dc2626", color: "white" }}
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </>
