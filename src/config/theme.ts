@@ -56,8 +56,8 @@ export const theme = {
   // Wedding details (used across pages)
   wedding: {
     couple: "Felicia & Paul",   // Change to your names!
-    date: "20. September 2025",
-    venue: "Schlossgarten",
+    date: "22. August 2026",
+    venue: "Landhotel Gut Wildberg",
   },
 } as const;
 
