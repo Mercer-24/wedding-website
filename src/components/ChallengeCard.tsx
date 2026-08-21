@@ -139,7 +139,7 @@ export default function ChallengeCard({ challenge }: { challenge: Challenge }) {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/heic,image/heif,image/webp"
           onChange={handleFileChange}
           className="hidden"
         />

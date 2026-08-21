@@ -1,7 +1,12 @@
+"use client";
+
 import { theme } from "@/config/theme";
+import { useI18n } from "@/lib/i18n-context";
 import Link from "next/link";
 
 export default function HomePage() {
+  const { t } = useI18n();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
       {/* Hero Section */}
@@ -26,7 +31,7 @@ export default function HomePage() {
           className="text-lg md:text-xl mb-10"
           style={{ color: theme.colors.textSecondary }}
         >
-          Wir feiern unsere Liebe — und ihr seid dabei!
+          {t("welcome.subtitle")}
         </p>
 
         {/* CTA Button */}
@@ -38,7 +43,7 @@ export default function HomePage() {
             color: theme.colors.textOnPrimary,
           }}
         >
-          Zur Fotochallenge →
+          {t("welcome.cta")} →
         </Link>
       </div>
 
