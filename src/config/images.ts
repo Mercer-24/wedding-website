@@ -15,7 +15,7 @@
 
 export const images = {
   // Hero section background on the welcome page
-  heroBackground: "/images/background.png",
+  heroBackground: "/images/pictures/welcomepage.jpeg",
 
   // Optional logo (displayed in navbar)
   logo: "/images/logo.jpg",
