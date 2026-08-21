@@ -96,6 +96,7 @@ export const challenges: Challenge[] = [
       "Take a photo with someone wearing red — the more striking, the better!",
     icon: "🔴",
   },
+  {
   id: "lets-celebrate",
     number: 8,
     titleDe: "Lasst uns feiern!",
@@ -105,6 +106,7 @@ export const challenges: Challenge[] = [
     descriptionEn:
       "Upload your coolest party photo from the evening! And then: pop your mobile in your pocket and head straight back to the dance floor!",
     icon: "🪩",
+  }
   
 ];
 
