@@ -10,13 +10,12 @@ services:
     environment:
       - DB_PATH=/data/wedding.db
       - UPLOADS_DIR=/data/uploads
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wedding.rule=Host(`feliciapaul.mercerdev.me`)"
-      - "traefik.http.routers.wedding.entrypoints=websecure"
-      - "traefik.http.routers.wedding.tls=true"
-      - "traefik.http.routers.wedding.tls.certresolver=letsencrypt"
-      - "traefik.http.services.wedding.loadbalancer.server.port=3000"
+    networks:
+      - n8n-network
 
 volumes:
   wedding-data:
+
+networks:
+  n8n-network:
+    external: true
