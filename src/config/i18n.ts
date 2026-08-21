@@ -38,7 +38,7 @@ export const t: Record<Locale, Translations> = {
     },
     photoChallenge: {
       title: "Fotochallenge",
-      subtitle: "Lade ein Foto zu jeder Challenge hoch und teilt eure besten Momente!",
+      subtitle: "Lade ein Foto zu jeder unserer Challenges hoch und teilt so eure besten Momente!",
       nameLabel: "Dein Name",
       namePlaceholder: "Max Mustermann",
       uploadButton: "Foto hochladen",
@@ -56,8 +56,8 @@ export const t: Record<Locale, Translations> = {
       letsGo: "Los geht's!",
     },
     schedule: {
-      title: "Ablauf",
-      subtitle: "So läuft der Tag ab",
+      title: "Ablaufplan",
+      subtitle: "So wird unser Tag verlaufen.",
       gathering: "Gäste versammeln sich",
       gatheringTime: "12:30 Uhr",
       ceremony: "Trauung",
@@ -79,7 +79,7 @@ export const t: Record<Locale, Translations> = {
     },
     weddingPhotos: {
       title: "Hochzeitsfotos",
-      subtitle: "Teilt eure schönsten Momente mit uns!",
+      subtitle: "Habt ihr noch Fotos, die ihr mit uns teilen wollt? Dann ladet sie hier für uns hoch! Wir freuen uns über jeden eingefangenen Moment von euch!",
       uploadButton: "Foto hochladen",
       uploading: "Hochladen...",
       success: "Foto erfolgreich hochgeladen!",
@@ -165,7 +165,7 @@ export const t: Record<Locale, Translations> = {
     },
     weddingPhotos: {
       title: "Wedding Photos",
-      subtitle: "Share your most beautiful moments with us!",
+      subtitle: "Do you have any more photos you’d like to share with us? If so, please upload them here! We’d love to see every moment you’ve captured!",
       uploadButton: "Upload Photo",
       uploading: "Uploading...",
       success: "Photo uploaded successfully!",
