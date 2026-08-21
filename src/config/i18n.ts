@@ -33,7 +33,7 @@ export const t: Record<Locale, Translations> = {
     },
     welcome: {
       title: "Willkommen",
-      subtitle: "Wir feiern unsere Liebe — und ihr seid dabei!",
+      subtitle: "Wir feiern unsere Liebe - und ihr seid dabei!",
       cta: "Zur Fotochallenge",
     },
     photoChallenge: {
@@ -64,11 +64,11 @@ export const t: Record<Locale, Translations> = {
       title: "Anfahrt",
       subtitle: "So findet ihr uns",
       venueName: "Schlossgarten",
-      address: "Musterstraße 1, 12345 Musterstadt",
+      address: "Musterstrasse 1, 12345 Musterstadt",
       directions: "Anfahrt",
     },
     admin: {
-      title: "Admin — Fotos",
+      title: "Admin - Fotos",
       download: "Herunterladen",
       noPhotos: "Noch keine Fotos hochgeladen.",
       filterByChallenge: "Filter nach Challenge",
@@ -91,7 +91,7 @@ export const t: Record<Locale, Translations> = {
     },
     welcome: {
       title: "Welcome",
-      subtitle: "We're celebrating our love — and you're part of it!",
+      subtitle: "We're celebrating our love - and you're part of it!",
       cta: "Go to Photo Challenge",
     },
     photoChallenge: {
@@ -126,7 +126,7 @@ export const t: Record<Locale, Translations> = {
       directions: "Directions",
     },
     admin: {
-      title: "Admin — Photos",
+      title: "Admin - Photos",
       download: "Download",
       noPhotos: "No photos uploaded yet.",
       filterByChallenge: "Filter by Challenge",
