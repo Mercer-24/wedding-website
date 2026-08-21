@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // better-sqlite3 is a native module — must be externalized for Docker
-  serverExternalPackages: ["better-sqlite3"],
+  // sql.js is WASM-based, no native modules needed
+  serverExternalPackages: ["sql.js"],
 };
 
 export default nextConfig;

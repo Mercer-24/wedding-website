@@ -7,8 +7,8 @@ export async function GET(request: NextRequest) {
     const challengeId = searchParams.get("challengeId");
 
     const photos = challengeId
-      ? getPhotosByChallenge(challengeId)
-      : getAllPhotos();
+      ? await getPhotosByChallenge(challengeId)
+      : await getAllPhotos();
 
     return NextResponse.json({ photos });
   } catch (error) {

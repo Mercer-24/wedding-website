@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     // Resolve guest: prefer guestId, fall back to guestName
     let resolvedGuestId = guestId;
     if (!resolvedGuestId && guestName) {
-      resolvedGuestId = findOrCreateGuest(guestName);
+      resolvedGuestId = await findOrCreateGuest(guestName);
     }
 
     if (!resolvedGuestId) {
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const exists = hasGuestUploadedForChallenge(resolvedGuestId, challengeId);
+    const exists = await hasGuestUploadedForChallenge(resolvedGuestId, challengeId);
     return NextResponse.json({ exists });
   } catch (error) {
     console.error("Check error:", error);

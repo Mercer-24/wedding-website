@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     // If only name provided, look up or create the guest
     if (!guestId && guestName) {
-      guestId = findOrCreateGuest(guestName);
+      guestId = await findOrCreateGuest(guestName);
     }
 
     // Validate file type
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(filePath, buffer);
 
     // Store in database
-    upsertPhoto(guestId!, challengeId, `${challengeId}/${filename}`, file.name);
+    await upsertPhoto(guestId!, challengeId, `${challengeId}/${filename}`, file.name);
 
     return NextResponse.json({ success: true, filename });
   } catch (error) {

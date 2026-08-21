@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const id = findOrCreateGuest(name.trim());
+    const id = await findOrCreateGuest(name.trim());
     return NextResponse.json({ id, name: name.trim() });
   } catch (error) {
     console.error("Guest creation error:", error);
