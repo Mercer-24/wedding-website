@@ -8,6 +8,7 @@ services:
     environment:
       - DB_PATH=/data/wedding.db
       - UPLOADS_DIR=/data/uploads
+      - ADMIN_PASSWORD=hochzeit2025
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wedding.rule=Host(`feliciapaul.mercerdev.me`)"

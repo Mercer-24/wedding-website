@@ -2,31 +2,13 @@
 
 import { useI18n } from "@/lib/i18n-context";
 import { theme } from "@/config/theme";
-import { useState, useRef, useEffect } from "react";
-
-interface WeddingPhoto {
-  id: string;
-  filename: string;
-  original_name: string;
-  created_at: string;
-}
+import { useState, useRef } from "react";
 
 export default function WeddingPhotosPage() {
   const { t } = useI18n();
   const [uploading, setUploading] = useState(false);
-  const [message, setMessage,] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [photos, setPhotos] = useState<WeddingPhoto[]>([]);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Load gallery on mount
-  useEffect(() => {
-    fetch("/api/wedding-photos/list")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.photos) setPhotos(data.photos);
-      })
-      .catch(() => {});
-  }, []);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -35,7 +17,6 @@ export default function WeddingPhotosPage() {
     setUploading(true);
     setMessage(null);
 
-    // Upload all selected files sequentially
     const results: { success: boolean; name: string }[] = [];
 
     for (const file of Array.from(files)) {
@@ -62,13 +43,6 @@ export default function WeddingPhotosPage() {
       }
     }
 
-    // Refresh gallery
-    try {
-      const res = await fetch("/api/wedding-photos/list");
-      const data = await res.json();
-      if (data.photos) setPhotos(data.photos);
-    } catch {}
-
     const failed = results.filter((r) => !r.success);
     if (failed.length === 0) {
       setMessage({ type: "success", text: t("weddingPhotos.success") });
@@ -82,7 +56,6 @@ export default function WeddingPhotosPage() {
     }
 
     setUploading(false);
-    // Reset file input
     e.target.value = "";
   };
 
@@ -137,38 +110,6 @@ export default function WeddingPhotosPage() {
           }}
         >
           {message.text}
-        </p>
-      )}
-
-      {/* Gallery */}
-      {photos.length > 0 ? (
-        <div>
-          <h2
-            className="text-xl font-semibold mb-4 text-center"
-            style={{ color: theme.colors.textPrimary }}
-          >
-            {t("weddingPhotos.gallery")}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {photos.map((photo) => (
-              <div
-                key={photo.id}
-                className="aspect-square rounded-lg overflow-hidden border"
-                style={{ borderColor: theme.colors.borderLight }}
-              >
-                <img
-                  src={`/api/photos/file?path=${encodeURIComponent(photo.filename)}`}
-                  alt={photo.original_name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <p className="text-center text-sm" style={{ color: theme.colors.textSecondary }}>
-          {t("weddingPhotos.noPhotos")}
         </p>
       )}
     </div>
