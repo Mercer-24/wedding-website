@@ -10,6 +10,11 @@ export default function SchedulePage() {
 
   const events = [
     {
+      time: t("schedule.gatheringTime"),
+      title: t("schedule.gathering"),
+      emoji: "🫶",
+    },
+    {
       time: t("schedule.ceremonyTime"),
       title: t("schedule.ceremony"),
       emoji: "💒",
@@ -20,9 +25,29 @@ export default function SchedulePage() {
       emoji: "🥂",
     },
     {
+      time: t("schedule.cakeTime"),
+      title: t("schedule.cake"),
+      emoji: "🎂",
+    },
+    {
+      time: t("schedule.program1Time"),
+      title: t("schedule.program1"),
+      emoji: "🎤",
+    },
+    {
+      time: t("schedule.gardenTime"),
+      title: t("schedule.garden"),
+      emoji: "🌿",
+    },
+    {
       time: t("schedule.dinnerTime"),
       title: t("schedule.dinner"),
       emoji: "🍽️",
+    },
+    {
+      time: t("schedule.program2Time"),
+      title: t("schedule.program2"),
+      emoji: "🎤",
     },
     {
       time: t("schedule.partyTime"),
