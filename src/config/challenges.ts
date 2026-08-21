@@ -25,9 +25,9 @@ export const challenges: Challenge[] = [
     titleDe: "Das lustigste Foto",
     titleEn: "The Funniest Photo",
     descriptionDe:
-      "Macht das witzigste Bild des Abends! Seid kreativ, verrückt und zeigt eure beste Seite.",
+      "Macht das witzigste Bild des Abends - seid kreativ!",
     descriptionEn:
-      "Take the funniest photo of the evening! Be creative, crazy, and show your best side.",
+      "Take the funniest photo of the evening - be creative!",
     icon: "🤣",
   },
   {
@@ -47,9 +47,9 @@ export const challenges: Challenge[] = [
     titleDe: "Nicht verwandt!",
     titleEn: "Not Related!",
     descriptionDe:
-      "Mach ein Foto mit jemandem, mit dem du nicht verwandt bist — überrascht euch gegenseitig!",
+      "Mach ein Foto mit jemandem, mit dem du selbst nicht verwandt bist - lernt euch kennen!",
     descriptionEn:
-      "Take a photo with someone you're not related to — surprise each other!",
+      "Take a photo with someone you're not related to - get to know each other!",
     icon: "🤝",
   },
   {
@@ -96,6 +96,16 @@ export const challenges: Challenge[] = [
       "Take a photo with someone wearing red — the more striking, the better!",
     icon: "🔴",
   },
+  id: "lets-celebrate",
+    number: 8,
+    titleDe: "Lasst uns feiern!",
+    titleEn: "Let's celebrate!",
+    descriptionDe:
+      "Ladet euer coolstes Party-Foto des Abends hoch! Und danach: Handy in die Tasche und ab zurück auf die Tanzfläche!",
+    descriptionEn:
+      "Upload your coolest party photo from the evening! And then: pop your mobile in your pocket and head straight back to the dance floor!",
+    icon: "🪩",
+  
 ];
 
 /**
