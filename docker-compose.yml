@@ -12,7 +12,7 @@ services:
       - UPLOADS_DIR=/data/uploads
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wedding.rule=Host(`hochzeit.mercerdev.me`)"
+      - "traefik.http.routers.wedding.rule=Host(`feliciapaul.mercerdev.me`)"
       - "traefik.http.routers.wedding.entrypoints=websecure"
       - "traefik.http.routers.wedding.tls=true"
       - "traefik.http.routers.wedding.tls.certresolver=letsencrypt"
