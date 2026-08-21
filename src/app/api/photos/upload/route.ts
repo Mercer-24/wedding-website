@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
 
     // If only name provided, look up or create the guest
     if (!guestId && guestName) {
-      guestId = await findOrCreateGuest(guestName);
+      const result = await findOrCreateGuest(guestName);
+      guestId = result.id;
     }
 
     // Validate file type

@@ -117,14 +117,27 @@ type SqlJsValue = number | string | Uint8Array | null;
 
 // --- Guest operations ---
 
-export async function findOrCreateGuest(name: string): Promise<string> {
+export async function findOrCreateGuest(name: string): Promise<{ id: string; name: string; created: boolean }> {
   const db = await ensureDb();
   const rows = queryAll("SELECT id FROM guests WHERE name = ?", [name]);
-  if (rows.length > 0) return rows[0].id as string;
+  if (rows.length > 0) {
+    // Name already taken — return it so the caller can decide
+    return { id: rows[0].id as string, name, created: false };
+  }
 
   const id = uuidv4();
   runStmt("INSERT INTO guests (id, name) VALUES (?, ?)", [id, name]);
-  return id;
+  return { id, name, created: true };
+}
+
+/**
+ * Check if a guest name is already taken by someone else.
+ * Returns the existing guest id if taken, null if available.
+ */
+export async function findGuestByName(name: string): Promise<string | null> {
+  await ensureDb();
+  const rows = queryAll("SELECT id FROM guests WHERE name = ?", [name]);
+  return rows.length > 0 ? (rows[0].id as string) : null;
 }
 
 export async function getGuestName(guestId: string): Promise<string | null> {

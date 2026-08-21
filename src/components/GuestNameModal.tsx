@@ -11,7 +11,7 @@ import { useState } from "react";
  * Asks for their name, registers them, and stores the ID in localStorage.
  */
 export default function GuestNameModal() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
   const { isModalOpen, submitName } = useGuest();
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -22,7 +22,7 @@ export default function GuestNameModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError(locale === "de" ? "Bitte gib deinen Namen ein." : "Please enter your name.");
+      setError(t("photoChallenge.nameRequired"));
       return;
     }
     setSubmitting(true);
@@ -30,16 +30,16 @@ export default function GuestNameModal() {
     try {
       await submitName(name.trim());
       // On success, submitName closes the modal — no further action needed.
-      // If we get here and modal is still open, something went wrong silently.
     } catch (err) {
       if (err instanceof GuestRegistrationError) {
-        setError(err.message);
+        // Check if it's a name-taken error
+        if (err.message === "name_taken") {
+          setError(t("photoChallenge.nameTaken"));
+        } else {
+          setError(err.message);
+        }
       } else {
-        setError(
-          locale === "de"
-            ? "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-            : "Something went wrong. Please try again."
-        );
+        setError(t("photoChallenge.nameError"));
       }
     } finally {
       setSubmitting(false);
@@ -59,12 +59,10 @@ export default function GuestNameModal() {
           className="text-xl font-bold mb-2"
           style={{ color: theme.colors.primary, fontFamily: theme.fonts.heading }}
         >
-          {locale === "de" ? "Wie heißt du?" : "What's your name?"}
+          {t("photoChallenge.nameTitle")}
         </h2>
         <p className="text-sm mb-4" style={{ color: theme.colors.textSecondary }}>
-          {locale === "de"
-            ? "Damit wir deine Fotos zuordnen können, brauchen wir deinen Namen. Du musst ihn nur einmal eingeben!"
-            : "So we can assign your photos, we need your name. You only need to enter it once!"}
+          {t("photoChallenge.nameSubtitle")}
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -98,9 +96,7 @@ export default function GuestNameModal() {
               color: theme.colors.textOnPrimary,
             }}
           >
-            {submitting
-              ? (locale === "de" ? "Speichern..." : "Saving...")
-              : (locale === "de" ? "Los geht's!" : "Let's go!")}
+            {submitting ? t("photoChallenge.saving") : t("photoChallenge.letsGo")}
           </button>
         </form>
       </div>

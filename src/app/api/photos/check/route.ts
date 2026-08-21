@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
     // Resolve guest: prefer guestId, fall back to guestName
     let resolvedGuestId = guestId;
     if (!resolvedGuestId && guestName) {
-      resolvedGuestId = await findOrCreateGuest(guestName);
+      const result = await findOrCreateGuest(guestName);
+      resolvedGuestId = result.id;
     }
 
     if (!resolvedGuestId) {

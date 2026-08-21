@@ -12,8 +12,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const id = await findOrCreateGuest(name.trim());
-    return NextResponse.json({ id, name: name.trim() });
+    const result = await findOrCreateGuest(name.trim());
+
+    if (!result.created) {
+      // Name already taken by another guest
+      return NextResponse.json(
+        { error: "name_taken", id: result.id },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json({ id: result.id, name: result.name });
   } catch (error) {
     console.error("Guest creation error:", error);
     return NextResponse.json(

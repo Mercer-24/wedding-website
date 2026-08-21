@@ -58,9 +58,8 @@ export function GuestProvider({ children }: { children: ReactNode }) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new GuestRegistrationError(
-        data.error || "Registration failed. Please try again."
-      );
+      const errorKey = data.error || "registration_failed";
+      throw new GuestRegistrationError(errorKey);
     }
 
     if (!data.id) {
