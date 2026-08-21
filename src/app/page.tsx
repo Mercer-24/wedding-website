@@ -36,7 +36,6 @@ export default function HomePage() {
           width={120}
           height={120}
           className="rounded-full mx-auto mb-6 object-cover"
-          style={{ border: `3px solid ${theme.colors.primary}` }}
         />
         <h1
           className="text-5xl md:text-7xl font-bold mb-4"

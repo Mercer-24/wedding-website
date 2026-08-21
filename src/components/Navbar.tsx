@@ -44,7 +44,6 @@ export default function Navbar() {
               width={36}
               height={36}
               className="rounded-full object-cover"
-              style={{ border: `2px solid ${theme.colors.primary}` }}
             />
             {theme.wedding.couple}
           </Link>
