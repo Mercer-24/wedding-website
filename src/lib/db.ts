@@ -56,6 +56,16 @@ async function ensureDb(): Promise<Database> {
   _db.run(`CREATE INDEX IF NOT EXISTS idx_photos_challenge ON photos(challenge_id)`);
   _db.run(`CREATE INDEX IF NOT EXISTS idx_photos_guest ON photos(guest_id)`);
 
+  // Wedding photos — simple uploads without guest association
+  _db.run(`
+    CREATE TABLE IF NOT EXISTS wedding_photos (
+      id TEXT PRIMARY KEY,
+      filename TEXT NOT NULL,
+      original_name TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+
   saveDb();
   _initialized = true;
   return _db;
@@ -198,4 +208,46 @@ export interface PhotoRecord {
   original_name: string;
   created_at: string;
   guest_name: string;
+}
+
+// --- Wedding photos operations (no guest required) ---
+
+export async function insertWeddingPhoto(
+  filename: string,
+  originalName: string
+): Promise<string> {
+  await ensureDb();
+  const id = uuidv4();
+  runStmt(
+    "INSERT INTO wedding_photos (id, filename, original_name) VALUES (?, ?, ?)",
+    [id, filename, originalName]
+  );
+  return id;
+}
+
+export async function deleteWeddingPhoto(id: string): Promise<void> {
+  await ensureDb();
+  const rows = queryAll("SELECT filename FROM wedding_photos WHERE id = ?", [id]);
+  if (rows.length > 0) {
+    const uploadsDir = process.env.UPLOADS_DIR || path.join(process.cwd(), "data", "uploads");
+    const oldPath = path.join(uploadsDir, "wedding", rows[0].filename as string);
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
+    }
+    runStmt("DELETE FROM wedding_photos WHERE id = ?", [id]);
+  }
+}
+
+export async function getAllWeddingPhotos(): Promise<WeddingPhotoRecord[]> {
+  await ensureDb();
+  return queryAll(
+    "SELECT id, filename, original_name, created_at FROM wedding_photos ORDER BY created_at DESC"
+  ) as unknown as WeddingPhotoRecord[];
+}
+
+export interface WeddingPhotoRecord {
+  id: string;
+  filename: string;
+  original_name: string;
+  created_at: string;
 }

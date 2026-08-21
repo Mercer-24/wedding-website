@@ -19,7 +19,7 @@ export default function Navbar() {
     { href: "/", label: t("nav.home") },
     { href: "/photo-challenge", label: t("nav.photoChallenge") },
     { href: "/schedule", label: t("nav.schedule") },
-    { href: "/location", label: t("nav.location") },
+    { href: "/wedding-photos", label: t("nav.weddingPhotos") },
   ];
 
   return (

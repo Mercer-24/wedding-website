@@ -28,7 +28,7 @@ export const t: Record<Locale, Translations> = {
       home: "Willkommen",
       photoChallenge: "Fotochallenge",
       schedule: "Ablauf",
-      location: "Anfahrt",
+      weddingPhotos: "Hochzeitsfotos",
       admin: "Admin",
     },
     welcome: {
@@ -60,12 +60,15 @@ export const t: Record<Locale, Translations> = {
       party: "Party",
       partyTime: "21:00 Uhr",
     },
-    location: {
-      title: "Anfahrt",
-      subtitle: "So findet ihr uns",
-      venueName: "Schlossgarten",
-      address: "Musterstrasse 1, 12345 Musterstadt",
-      directions: "Anfahrt",
+    weddingPhotos: {
+      title: "Hochzeitsfotos",
+      subtitle: "Teilt eure schönsten Momente mit uns!",
+      uploadButton: "Foto hochladen",
+      uploading: "Hochladen...",
+      success: "Foto erfolgreich hochgeladen!",
+      error: "Fehler beim Hochladen. Bitte versuche es erneut.",
+      gallery: "Galerie",
+      noPhotos: "Noch keine Fotos — seid die Ersten!",
     },
     admin: {
       title: "Admin - Fotos",
@@ -86,7 +89,7 @@ export const t: Record<Locale, Translations> = {
       home: "Welcome",
       photoChallenge: "Photo Challenge",
       schedule: "Schedule",
-      location: "Location",
+      weddingPhotos: "Wedding Photos",
       admin: "Admin",
     },
     welcome: {
@@ -118,12 +121,15 @@ export const t: Record<Locale, Translations> = {
       party: "Party",
       partyTime: "9:00 PM",
     },
-    location: {
-      title: "Location",
-      subtitle: "How to find us",
-      venueName: "Castle Garden",
-      address: "Example Street 1, 12345 Example City",
-      directions: "Directions",
+    weddingPhotos: {
+      title: "Wedding Photos",
+      subtitle: "Share your most beautiful moments with us!",
+      uploadButton: "Upload Photo",
+      uploading: "Uploading...",
+      success: "Photo uploaded successfully!",
+      error: "Error uploading photo. Please try again.",
+      gallery: "Gallery",
+      noPhotos: "No photos yet — be the first!",
     },
     admin: {
       title: "Admin - Photos",
