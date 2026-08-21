@@ -1,8 +1,8 @@
-FROM node:20-alpine AS base
+FROM node:20 AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache python3 make g++
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -19,8 +19,7 @@ ENV UPLOADS_DIR=/data/uploads
 
 RUN npm run build
 
-# Production image — use full node_modules (not standalone)
-# This ensures Tailwind v4 CSS injection works correctly
+# Production image
 FROM base AS runner
 WORKDIR /app
 
