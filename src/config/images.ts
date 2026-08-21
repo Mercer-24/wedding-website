@@ -15,10 +15,10 @@
 
 export const images = {
   // Hero section background on the welcome page
-  heroBackground: "/images/hero-background.jpg",
+  heroBackground: "/images/background.png",
 
   // Optional logo (displayed in navbar)
-  logo: "/images/logo.png",
+  logo: "/images/logo.jpg",
 
   // Favicon
   favicon: "/favicon.ico",
