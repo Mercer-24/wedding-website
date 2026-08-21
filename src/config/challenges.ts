@@ -41,6 +41,61 @@ export const challenges: Challenge[] = [
       "Capture the couple in a beautiful, unexpected, or funny moment.",
     icon: "💍",
   },
+  {
+    id: "not-related",
+    number: 3,
+    titleDe: "Nicht verwandt!",
+    titleEn: "Not Related!",
+    descriptionDe:
+      "Mach ein Foto mit jemandem, mit dem du nicht verwandt bist — überrascht euch gegenseitig!",
+    descriptionEn:
+      "Take a photo with someone you're not related to — surprise each other!",
+    icon: "🤝",
+  },
+  {
+    id: "best-outfit",
+    number: 4,
+    titleDe: "Das schönste Outfit",
+    titleEn: "Best Outfit",
+    descriptionDe:
+      "Mach ein Foto mit jemandem, der für dich das schönste Outfit des Abends trägt — Brautpaar ausgenommen!",
+    descriptionEn:
+      "Take a photo with the person wearing the best outfit of the evening — the couple doesn't count!",
+    icon: "👗",
+  },
+  {
+    id: "same-age",
+    number: 5,
+    titleDe: "Gleich alt!",
+    titleEn: "Same Age!",
+    descriptionDe:
+      "Finde jemanden, der genau so alt ist wie du — und macht ein Foto zusammen!",
+    descriptionEn:
+      "Find someone who is exactly the same age as you — and take a photo together!",
+    icon: "🎂",
+  },
+  {
+    id: "longest-married",
+    number: 6,
+    titleDe: "Am längsten verheiratet",
+    titleEn: "Longest Married",
+    descriptionDe:
+      "Mach ein Foto mit dem Paar, das am längsten miteinander verheiratet ist!",
+    descriptionEn:
+      "Take a photo with the couple who has been married the longest!",
+    icon: "❤️",
+  },
+  {
+    id: "wearing-red",
+    number: 7,
+    titleDe: "Wer trägt Rot?",
+    titleEn: "Who's Wearing Red?",
+    descriptionDe:
+      "Mach ein Foto mit jemandem, der die Farbe Rot trägt — je auffälliger, desto besser!",
+    descriptionEn:
+      "Take a photo with someone wearing red — the more striking, the better!",
+    icon: "🔴",
+  },
 ];
 
 /**
