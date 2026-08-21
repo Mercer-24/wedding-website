@@ -35,6 +35,12 @@ export const images = {
     venue: "/images/location/venue.jpg",
     map: "/images/location/map.jpg",
   },
+
+  // Page hero images (full-width banner behind headings)
+  pages: {
+    schedule: "/images/pictures/startpage.jpeg",
+    "photo-challenge": "/images/pictures/fotochallenge.jpeg",
+  },
 } as const;
 
 export type Images = typeof images;
