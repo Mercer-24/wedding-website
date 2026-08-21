@@ -3,13 +3,17 @@ services:
     build: .
     container_name: wedding-website
     restart: unless-stopped
-    ports:
-      - "3099:3000"
     volumes:
       - wedding-data:/data
     environment:
       - DB_PATH=/data/wedding.db
       - UPLOADS_DIR=/data/uploads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wedding.rule=Host(`feliciapaul.mercerdev.me`)"
+      - "traefik.http.routers.wedding.entrypoints=web,websecure"
+      - "traefik.http.routers.wedding.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.wedding.loadbalancer.server.port=3000"
     networks:
       - n8n-network
 
@@ -19,3 +23,4 @@ volumes:
 networks:
   n8n-network:
     external: true
+    name: n8n_n8n-network
