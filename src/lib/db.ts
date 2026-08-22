@@ -75,6 +75,13 @@ async function ensureDb(): Promise<Database> {
     // Column already exists, ignore
   }
 
+  // Migration: add media_type column if it doesn't exist
+  try {
+    _db.run("ALTER TABLE wedding_photos ADD COLUMN media_type TEXT NOT NULL DEFAULT 'photo'");
+  } catch {
+    // Column already exists, ignore
+  }
+
   saveDb();
   _initialized = true;
   return _db;
@@ -252,13 +259,14 @@ export async function deletePhoto(id: string): Promise<void> {
 export async function insertWeddingPhoto(
   filename: string,
   originalName: string,
-  guestId?: string | null
+  guestId?: string | null,
+  mediaType: "photo" | "video" = "photo"
 ): Promise<string> {
   await ensureDb();
   const id = uuidv4();
   runStmt(
-    "INSERT INTO wedding_photos (id, guest_id, filename, original_name) VALUES (?, ?, ?, ?)",
-    [id, guestId || null, filename, originalName]
+    "INSERT INTO wedding_photos (id, guest_id, filename, original_name, media_type) VALUES (?, ?, ?, ?, ?)",
+    [id, guestId || null, filename, originalName, mediaType]
   );
   return id;
 }
@@ -279,7 +287,7 @@ export async function deleteWeddingPhoto(id: string): Promise<void> {
 export async function getAllWeddingPhotos(): Promise<WeddingPhotoRecord[]> {
   await ensureDb();
   return queryAll(
-    `SELECT wp.id, wp.filename, wp.original_name, wp.created_at,
+    `SELECT wp.id, wp.filename, wp.original_name, wp.created_at, wp.media_type,
             g.name as guest_name
      FROM wedding_photos wp
      LEFT JOIN guests g ON wp.guest_id = g.id
@@ -293,6 +301,7 @@ export interface WeddingPhotoRecord {
   original_name: string;
   created_at: string;
   guest_name: string | null;
+  media_type: string;
 }
 
 // --- Leaderboard ---

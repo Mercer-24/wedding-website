@@ -7,6 +7,24 @@ import { v4 as uuidv4 } from "uuid";
 const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), "data", "uploads");
 const WEDDING_DIR = path.join(UPLOADS_DIR, "wedding");
 
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/heic",
+  "image/heif",
+  "image/webp",
+];
+
+const ALLOWED_VIDEO_TYPES = [
+  "video/mp4",
+  "video/quicktime",
+  "video/webm",
+  "video/x-msvideo",
+];
+
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50 MB
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -20,18 +38,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
+    const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
+    const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
+
+    if (!isImage && !isVideo) {
       return NextResponse.json(
-        { error: "Only image files are allowed" },
+        { error: "Only image and video files are allowed" },
         { status: 400 }
       );
     }
 
-    // Max 10MB
-    if (file.size > 10 * 1024 * 1024) {
+    const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
+    if (file.size > maxSize) {
+      const maxMB = isVideo ? "50" : "10";
       return NextResponse.json(
-        { error: "File too large. Maximum size is 10MB." },
+        { error: `File too large. Maximum size for ${isVideo ? "videos" : "images"} is ${maxMB}MB.` },
         { status: 400 }
       );
     }
@@ -42,7 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate safe filename
-    const ext = path.extname(file.name) || ".jpg";
+    const ext = path.extname(file.name) || (isVideo ? ".mp4" : ".jpg");
     const filename = `${uuidv4()}${ext}`;
     const filePath = path.join(WEDDING_DIR, filename);
 
@@ -50,10 +71,17 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(filePath, buffer);
 
-    // Store in database (optional guest association)
-    const id = await insertWeddingPhoto(`wedding/${filename}`, file.name, guestId || undefined);
+    const mediaType = isVideo ? "video" : "photo";
 
-    return NextResponse.json({ success: true, id, filename });
+    // Store in database
+    const id = await insertWeddingPhoto(
+      `wedding/${filename}`,
+      file.name,
+      guestId || undefined,
+      mediaType
+    );
+
+    return NextResponse.json({ success: true, id, filename, mediaType });
   } catch (error) {
     console.error("Wedding photo upload error:", error);
     return NextResponse.json(

@@ -5,6 +5,24 @@ import { useGuest } from "@/lib/guest-context";
 import { theme } from "@/config/theme";
 import { useState, useRef } from "react";
 
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/heic",
+  "image/heif",
+  "image/webp",
+];
+
+const ALLOWED_VIDEO_TYPES = [
+  "video/mp4",
+  "video/quicktime",
+  "video/webm",
+  "video/x-msvideo",
+];
+
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50 MB
+
 export default function WeddingPhotosPage() {
   const { t } = useI18n();
   const { guestId } = useGuest();
@@ -22,11 +40,16 @@ export default function WeddingPhotosPage() {
     const results: { success: boolean; name: string }[] = [];
 
     for (const file of Array.from(files)) {
-      if (!file.type.startsWith("image/")) {
+      const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
+      const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
+
+      if (!isImage && !isVideo) {
         results.push({ success: false, name: file.name });
         continue;
       }
-      if (file.size > 10 * 1024 * 1024) {
+
+      const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
+      if (file.size > maxSize) {
         results.push({ success: false, name: file.name });
         continue;
       }
@@ -75,6 +98,9 @@ export default function WeddingPhotosPage() {
         <p className="text-lg" style={{ color: theme.colors.textSecondary }}>
           {t("weddingPhotos.subtitle")}
         </p>
+        <p className="text-sm mt-2" style={{ color: theme.colors.textSecondary }}>
+          {t("weddingPhotos.uploadHint")}
+        </p>
         <div
           className="w-16 h-0.5 mx-auto mt-6"
           style={{ backgroundColor: theme.colors.accent }}
@@ -86,7 +112,7 @@ export default function WeddingPhotosPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/heic,image/heif,image/webp"
+          accept="image/jpeg,image/png,image/heic,image/heif,image/webp,video/mp4,video/quicktime,video/webm,video/x-msvideo"
           multiple
           onChange={handleFileChange}
           className="hidden"
