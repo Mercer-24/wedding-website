@@ -6,6 +6,7 @@ import { images } from "@/config/images";
 import { challenges } from "@/config/challenges";
 import PageHero from "@/components/PageHero";
 import ChallengeCard from "@/components/ChallengeCard";
+import Leaderboard from "@/components/Leaderboard";
 
 export default function PhotoChallengePage() {
   const { t } = useI18n();
@@ -18,6 +19,9 @@ export default function PhotoChallengePage() {
         title={t("photoChallenge.title")}
         subtitle={t("photoChallenge.subtitle")}
       />
+
+      {/* Leaderboard — top 10 by completed challenges */}
+      <Leaderboard totalChallenges={challenges.length} />
 
       {/* Challenge Cards Grid */}
       <div className="max-w-4xl mx-auto px-4 md:px-8 py-12 md:py-16">

@@ -294,3 +294,42 @@ export interface WeddingPhotoRecord {
   created_at: string;
   guest_name: string | null;
 }
+
+// --- Leaderboard ---
+
+export interface LeaderboardEntry {
+  rank: number;
+  guest_name: string;
+  completed_challenges: number;
+  last_upload_at: string; // when this guest reached their current challenge count
+}
+
+/**
+ * Get the top N guests by number of completed challenges.
+ *
+ * Tiebreaker: if two guests have the same number of completed challenges,
+ * the one who reached that count earlier (smaller MAX(created_at) of their
+ * photo uploads) ranks higher.
+ */
+export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEntry[]> {
+  await ensureDb();
+  const rows = queryAll(
+    `SELECT
+       g.name AS guest_name,
+       COUNT(p.challenge_id) AS completed_challenges,
+       MAX(p.created_at) AS last_upload_at
+     FROM photos p
+     JOIN guests g ON p.guest_id = g.id
+     GROUP BY p.guest_id
+     ORDER BY completed_challenges DESC, last_upload_at ASC
+     LIMIT ?`,
+    [limit]
+  );
+
+  return rows.map((row, index) => ({
+    rank: index + 1,
+    guest_name: row.guest_name as string,
+    completed_challenges: row.completed_challenges as number,
+    last_upload_at: row.last_upload_at as string,
+  }));
+}

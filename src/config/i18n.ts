@@ -54,6 +54,10 @@ export const t: Record<Locale, Translations> = {
       nameError: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
       saving: "Speichern...",
       letsGo: "Los geht's!",
+      leaderboardTitle: "Bestenliste",
+      leaderboardRank: "Platz",
+      leaderboardName: "Name",
+      leaderboardChallenges: "Challenges",
     },
     schedule: {
       title: "Ablaufplan",
@@ -140,6 +144,10 @@ export const t: Record<Locale, Translations> = {
       nameError: "Something went wrong. Please try again.",
       saving: "Saving...",
       letsGo: "Let's go!",
+      leaderboardTitle: "Leaderboard",
+      leaderboardRank: "Rank",
+      leaderboardName: "Name",
+      leaderboardChallenges: "Challenges",
     },
     schedule: {
       title: "Schedule",
