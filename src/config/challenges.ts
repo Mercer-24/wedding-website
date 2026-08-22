@@ -106,6 +106,39 @@ export const challenges: Challenge[] = [
     descriptionEn:
       "Upload your coolest party photo from the evening! And then: pop your mobile in your pocket and head straight back to the dance floor!",
     icon: "🪩",
+  },
+  {
+    id: "nice-shoes",
+    number: 9,
+    titleDe: "Coole Schuhe!",
+    titleEn: "Nice Shoes!",
+    descriptionDe:
+      "Macht ein Foto mit der Person, die die schönsten Schuhe trägt. Stellt die Schuhe dabei gut zur Schau - Brautpaar ausgenommen!",
+    descriptionEn:
+      "Take a photo with the person wearing the best shoes. Make sure the shoes are clearly visible in the photo – except for the bride and groom’s shoes!",
+    icon: "👠"
+  },
+  {
+    id: "details",
+    number: 10,
+    titleDe: "Auge fürs Detail!",
+    titleEn: "An eye for detail!",
+    descriptionDe:
+      "Macht ein Foto von dem, in euren Augen, schönsten Deko-Element!",
+    descriptionEn:
+      "Take a photo of what you think is the prettiest decorative item!",
+    icon: "✨"
+  },
+  {
+    id: "partner-look",
+    number: 11,
+    titleDe: "Partner-Look",
+    titleEn: "Partner-Look!",
+    descriptionDe:
+      "Macht ein Foto mit einer person zusammen, die heute die selbe Farbe trägt!",
+    descriptionEn:
+      "Take a photo with someone who’s wearing the same colour today!",
+    icon: "👯"
   }
   
 ];
