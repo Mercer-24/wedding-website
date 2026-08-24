@@ -32,6 +32,7 @@ export default function AdminPage() {
   const [filterChallenge, setFilterChallenge] = useState<string>("all");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"challenge" | "wedding">("challenge");
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (authenticated) loadPhotos();
@@ -107,6 +108,35 @@ export default function AdminPage() {
     }
   };
 
+  const handleDownloadZip = async () => {
+    setDownloading(true);
+    try {
+      const type = activeTab === "wedding" ? "wedding" : "challenge";
+      const res = await fetch(`/api/photos/download-zip?type=${type}`);
+      if (!res.ok) {
+        alert(res.status === 404 ? "No photos to download" : "Download failed");
+        return;
+      }
+      const blob = await res.blob();
+      const contentDisposition = res.headers.get("content-disposition");
+      const match = contentDisposition?.match(/filename="?(.+?)"?$/);
+      const filename = match ? match[1] : `hochzeitsfotos_${new Date().toISOString().slice(0, 10)}.zip`;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("ZIP download failed:", err);
+      alert("Download failed");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   // --- Login Screen ---
   if (!authenticated) {
     return (
@@ -159,13 +189,26 @@ export default function AdminPage() {
         >
           {t("admin.title")}
         </h1>
-        <button
-          onClick={() => setAuthenticated(false)}
-          className="text-sm underline"
-          style={{ color: theme.colors.textSecondary }}
-        >
-          {t("admin.logout")}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleDownloadZip}
+            disabled={downloading}
+            className="px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+            style={{
+              backgroundColor: theme.colors.primary,
+              color: theme.colors.textOnPrimary,
+            }}
+          >
+            {downloading ? t("admin.downloadingZip") : t("admin.downloadZip")}
+          </button>
+          <button
+            onClick={() => setAuthenticated(false)}
+            className="text-sm underline"
+            style={{ color: theme.colors.textSecondary }}
+          >
+            {t("admin.logout")}
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}

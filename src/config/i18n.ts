@@ -109,6 +109,8 @@ export const t: Record<Locale, Translations> = {
       wrongPassword: "Falsches Passwort",
       loginFailed: "Fehler beim Anmelden",
       deleteConfirm: "Foto wirklich löschen?",
+      downloadZip: "Alle als ZIP herunterladen",
+      downloadingZip: "ZIP wird erstellt...",
     },
     common: {
       languageSwitch: "Sprache wechseln",
@@ -200,6 +202,8 @@ export const t: Record<Locale, Translations> = {
       wrongPassword: "Invalid password",
       loginFailed: "Login failed",
       deleteConfirm: "Delete this photo?",
+      downloadZip: "Download all as ZIP",
+      downloadingZip: "Creating ZIP...",
     },
     common: {
       languageSwitch: "Switch language",
