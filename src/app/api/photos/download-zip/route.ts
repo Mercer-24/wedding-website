@@ -3,7 +3,7 @@ import { getAllPhotos, getAllWeddingPhotos } from "@/lib/db";
 import { challenges } from "@/config/challenges";
 import path from "path";
 import * as fs from "fs";
-import type { Archiver } from "archiver";
+import { ZipArchive } from "archiver";
 
 const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), "data", "uploads");
 
@@ -121,10 +121,8 @@ export async function GET(request: NextRequest) {
     // Deduplicate filenames within the same folder
     const namedEntries = deduplicateNames(zipEntries);
 
-    // Build the ZIP stream using archiver
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const createZip = require("archiver");
-    const archive: InstanceType<typeof Archiver> = createZip("zip", { zlib: { level: 6 } });
+    // Build the ZIP stream using ZipArchive class from archiver
+    const archive = new ZipArchive({ zlib: { level: 6 } });
 
     for (const entry of namedEntries) {
       archive.file(entry.diskPath, { name: entry.zipName, prefix: entry.folder });
