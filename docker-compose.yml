@@ -16,12 +16,12 @@ services:
       - "traefik.http.routers.wedding.tls.certresolver=mytlschallenge"
       - "traefik.http.services.wedding.loadbalancer.server.port=3000"
     networks:
-      - n8n-network
+      - proxy
 
 volumes:
   wedding-data:
 
 networks:
-  n8n-network:
+  proxy:
     external: true
-    name: n8n_n8n-network
+    name: proxy
